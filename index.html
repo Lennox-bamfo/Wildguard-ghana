@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WildGuard Ghana — Smart Protected Area Dashboard</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div>
+    <div class="brand">WILDGUARD <span>GHANA</span></div>
+    <div class="subtitle">AI + Sensor Intelligence · Mole National Park</div>
+  </div>
+  <div class="top-status"><span class="dot"></span> Prototype · Simulated Data</div>
+</header>
+
+<main>
+<section class="hero">
+  <div>
+    <h1>Protected Area Intelligence Map</h1>
+    <p>Detect · Locate · Verify · Understand · Act</p>
+  </div>
+  <div class="controls">
+    <button id="simulateBtn" class="primary">⚠ Simulate Gunshot</button>
+    <button id="simulateChainsaw" class="secondary">🪚 Simulate Chainsaw</button>
+    <button id="simulateRanger" class="secondary">🛡️ Ranger Nearby</button>
+    <button id="toggleNetwork" class="secondary">📡 Toggle Network</button>
+  </div>
+</section>
+
+<section class="stats">
+  <div class="card"><div class="label">ACTIVE NODES</div><div id="nodeCount" class="value">8</div><div class="muted">LoRa-connected</div></div>
+  <div class="card"><div class="label">ALERTS TODAY</div><div id="alertCount" class="value">3</div><div class="muted">2 verified · 1 pending</div></div>
+  <div class="card"><div class="label">NETWORK</div><div class="value good" id="networkStatus">ONLINE</div><div class="muted">Base station connected</div></div>
+  <div class="card"><div class="label">AI CONFIDENCE</div><div id="confidence" class="value">94%</div><div class="muted">Latest threat event</div></div>
+</section>
+
+<section class="grid">
+<div class="panel map-panel">
+  <div class="panel-head">
+    <div><h2>WildGuard Intelligence Map</h2><span class="small">Mole National Park · simulated</span></div>
+    <div class="legend">
+      <span><i class="node"></i> Sensor Node</span>
+      <span><i class="threat"></i> Threat</span>
+      <span><i class="wildlife"></i> Wildlife</span>
+    </div>
+  </div>
+  <div id="map" class="map">
+    <div class="zone zone-a">ZONE A</div><div class="zone zone-b">ZONE B</div><div class="zone zone-c">ZONE C</div>
+    <div class="road r1"></div><div class="road r2"></div><div class="road r3"></div>
+    <div id="nodes"></div><div id="rangers" style="display:none"></div><div id="events"></div><div id="mapPopup" class="map-popup"></div>
+    <div class="base"><span>⌂</span><b>BASE<br>STATION</b></div>
+    <div class="map-note">Illustrative field map · ⌁ Acoustic · ▣ Camera · ◉ Combined · ⚠ Threat</div>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel-head"><div><h2>Latest Event</h2><span class="small">Evidence-first alert</span></div></div>
+  <div id="latestEvent" class="event-card">
+    <div class="event-top"><span id="eventBadge" class="badge threat-badge">THREAT DETECTED</span><span id="eventTime">02:17</span></div>
+    <h3 id="eventTitle">Gunshot</h3>
+    <div class="event-grid">
+      <div><span>Confidence</span><b id="eventConfidence">94%</b></div>
+      <div><span>Source area</span><b id="eventZone">Zone A</b></div>
+      <div><span>Evidence</span><b id="eventEvidence">Audio</b></div>
+      <div><span>Status</span><b id="eventStatus">Pending verification</b></div>
+    </div>
+    <button id="verifyBtn" class="verify">✓ Verify Alert (Supervisor)</button>
+    <div class="ranger-card"><b>🛡️ Ranger Status:</b> <span id="rangerStatus" class="ranger-online">No ranger currently assigned to this alert</span></div>
+    <div class="ranger-list">
+      <div class="ranger-row"><b>Ranger 01</b><span>● On patrol · Zone A</span></div>
+      <div class="ranger-row"><b>Ranger 02</b><span>● On patrol · Zone B</span></div>
+      <div class="ranger-row"><b>Ranger 03</b><span>● Available · Zone C</span></div>
+      <div class="ranger-row"><b>Ranger 04</b><span>● Standby · 350 m</span></div>
+    </div>
+  </div>
+  <div class="evidence">
+    <h3>Evidence</h3>
+    <div class="audio"><span class="play">▶</span><div><b id="evidenceTitle">Acoustic signature</b><small id="evidenceFile">simulated_gunshot_0217.wav</small></div><span class="wave">▁▃▇▂▅▁▆▃▁</span></div>
+    <div class="camera"><span>📷</span><div><b>Camera trap</b><small id="cameraEvidence">Human activity detected nearby</small></div><span class="confidence" id="cameraConfidence">88%</span></div>
+  </div>
+</div>
+</section>
+
+<section class="grid lower">
+<div class="panel">
+  <div class="panel-head"><div><h2>Sensor Network</h2><span class="small">Edge devices · LoRa/LoRaWAN</span></div></div>
+  <div class="filter-row">
+    <button class="filter active-filter" data-filter="all">All</button>
+    <button class="filter" data-filter="online">Online</button>
+    <button class="filter" data-filter="offline">Offline</button>
+  </div>
+  <div id="sensorList" class="sensor-list"></div>
+  <div id="sensorDetail" class="sensor-detail">Click a sensor to inspect its status.</div>
+</div>
+
+<div class="panel">
+  <div class="panel-head"><div><h2>System Workflow</h2><span class="small">Human remains in control</span></div></div>
+  <div class="workflow">
+    <div id="stepSense" class="step active"><b>1</b><span>Sense</span><small>Mic + camera</small></div><div class="arrow">→</div>
+    <div id="stepUnderstand" class="step"><b>2</b><span>Understand</span><small>YAMNet / YOLO</small></div><div class="arrow">→</div>
+    <div id="stepLocate" class="step"><b>3</b><span>Locate</span><small>Sensor coordinates</small></div><div class="arrow">→</div>
+    <div id="stepConnect" class="step"><b>4</b><span>Connect</span><small>LoRa → gateway</small></div><div class="arrow">→</div>
+    <div id="stepVerify" class="step"><b>5</b><span>Verify</span><small>Duty officer</small></div>
+  </div>
+  <div class="connectivity"><b>Connectivity:</b> Field node → LoRa/LoRaWAN → Base Station → Cellular/Satellite → Dashboard</div>
+  <div id="workflowStatus" class="workflow-status"><strong>Current stage:</strong> Sense — monitoring field sensors<br><span>Workflow advances only when the authorized supervisor clicks Verify Alert.</span></div>
+  <div class="activity" id="activityLog"><b>Activity Log</b><div>System initialized.</div></div>
+</div>
+</section>
+
+<section class="panel limitations">
+  <div><b>Responsible AI</b><span>AI assists; humans decide. Exact source locations are estimates and deployment counts/costs require a site survey.</span></div>
+  <div><b>Field protection</b><span>Proposed: weather-resistant enclosure, protected cabling, animal-resistant guard and elevated mounting.</span></div>
+  <div><b>No internet</b><span>LoRa handles local sensor-to-gateway communication; gateway can store alerts and forward when backhaul returns.</span></div>
+</section>
+</main>
+
+<div id="toast" class="toast">New alert received</div>
+
+<script src="script.js"></script>
+</body>
+</html>
